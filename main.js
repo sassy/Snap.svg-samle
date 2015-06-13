@@ -37,6 +37,26 @@ function clickCircle(s) {
     });
 }
 
+function dragScalingRect(s) {
+    var rect = s.rect(100, 100, 100, 100).attr({
+      fill: "#ff00ff"
+    });
+    rect.drag(function(dx, dy) {
+      //move
+      var scale = 1 + dx / 50;
+      this.attr({
+        transform: this.data('origTransform') + (this.data('origTransform') ? "S" : "s") + + scale
+      });
+      console.log(this.transform());
+    }, function() {
+      //start
+      this.data('origTransform', this.transform());
+    }, function() {
+      //stop
+      //do nothing
+    });
+}
+
 function drawObject(id, val) {
     var paper = Snap(id);
     paper.clear();
@@ -49,6 +69,9 @@ function drawObject(id, val) {
       break;
     case "click":
       clickCircle(paper);
+      break;
+    case "scaling":
+      dragScalingRect(paper);
       break;
     default:
       break;
